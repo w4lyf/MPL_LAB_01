@@ -1,0 +1,22 @@
+{
+  "name": "irctc-booking-server",
+  "version": "1.0.0",
+  "description": "Backend server for IRCTC train booking app",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "irctc-api": "^3.0.6",
+    "mongoose": "^8.9.6",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

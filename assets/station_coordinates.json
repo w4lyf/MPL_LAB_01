@@ -3,13 +3,91 @@
   {
     "code": "CSMT",
     "name": "Mumbai CST",
-    "x": 64,
+    "x": 65,
+    "y": 418
+  },
+  {
+    "code": "SUR",
+    "name": "Solapur Jn",
+    "x": 105,
+    "y": 435
+  },
+  {
+    "code": "BPL",
+    "name": "Bhopal Jn",
+    "x": 126,
+    "y": 356
+  },
+  {
+    "code": "RJT",
+    "name": "Rajkot Jn",
+    "x": 40,
+    "y": 368
+  },
+  {
+    "code": "JP",
+    "name": "Jaipur",
+    "x": 107,
+    "y": 301
+  },
+  {
+    "code": "AGA",
+    "name": "Agra",
+    "x": 134,
+    "y": 301
+  },
+  {
+    "code": "DLI",
+    "name": "Delhi",
+    "x": 128,
+    "y": 278
+  },
+  {
+    "code": "LC",
+    "name": "Lucknow City",
+    "x": 172,
+    "y": 308
+  },
+  {
+    "code": "KOAA",
+    "name": "Kolkata",
+    "x": 275,
+    "y": 361
+  },
+  {
+    "code": "NGP",
+    "name": "Nagpur",
+    "x": 149,
+    "y": 386
+  },
+  {
+    "code": "VSKP",
+    "name": "Vishakapatnam",
+    "x": 206,
     "y": 434
+  },
+  {
+    "code": "HYB",
+    "name": "Hyderabad Decan",
+    "x": 143,
+    "y": 438
+  },
+  {
+    "code": "MAS",
+    "name": "Chennai",
+    "x": 165,
+    "y": 507
+  },
+  {
+    "code": "TVC",
+    "name": "Trivandrum",
+    "x": 120,
+    "y": 566
   },
   {
     "code": "PUNE",
     "name": "Pune Jn",
-    "x": 82,
-    "y": 440
+    "x": 83,
+    "y": 424
   }
 ]

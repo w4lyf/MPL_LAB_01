@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
-class Station {
+class Station {                                         // model of station class
   final String code;
   final String name;
   final double x;
@@ -26,7 +26,7 @@ class Station {
 }
 
 class MapPage extends StatefulWidget {
-  final Function(String code, String name) onStationSelected;
+  final Function(String code, String name) onStationSelected;  // pass back selected station info, and update the label based on departure/arrival mode.
   final bool isSelectingFromStation;
   
   const MapPage({
@@ -42,9 +42,8 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   List<Station> stations = [];
   bool isLoading = true;
-  final TransformationController _transformationController = TransformationController();
+  final TransformationController _transformationController = TransformationController();          // for zoom controls
   
-  // Track the image dimensions
   Size _imageSize = Size.zero;
   final GlobalKey _imageKey = GlobalKey();
   
@@ -53,14 +52,13 @@ class _MapPageState extends State<MapPage> {
     super.initState();
     _loadStationCoordinates();
     
-    // Add a post-frame callback to measure the image size
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateImageSize();
     });
   }
   
   void _updateImageSize() {
-    final RenderBox? renderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? renderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;  // to update imagekey based on screen size
     if (renderBox != null) {
       setState(() {
         _imageSize = renderBox.size;
@@ -68,17 +66,16 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
-  Future<void> _loadStationCoordinates() async {
+  Future<void> _loadStationCoordinates() async {            // Loads station data from a JSON file and updates image size after render
     try {
-      final String response = await rootBundle.loadString('assets/station_coordinates.json');
-      final List<dynamic> data = json.decode(response);
+      final String response = await rootBundle.loadString('assets/station_coordinates.json'); // Reads JSON asset, parses it into a list of Station objects.
+      final List<dynamic> data = json.decode(response);                                        // Faster and simpler for static data.
       
       setState(() {
         stations = data.map((station) => Station.fromJson(station)).toList();
         isLoading = false;
       });
     } catch (e) {
-      print('Error loading station coordinates: $e');
       setState(() {
         isLoading = false;
       });
@@ -88,7 +85,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(                                     // app bar with title based on from or to selected
         title: Text(
           widget.isSelectingFromStation 
             ? 'Select Departure Station' 
@@ -96,8 +93,7 @@ class _MapPageState extends State<MapPage> {
         ),
         backgroundColor: Colors.deepPurple,
       ),
-      body: Stack(
-          
+      body: Stack(    
         children: [
           SizedBox(
             child: InteractiveViewer(
@@ -107,42 +103,35 @@ class _MapPageState extends State<MapPage> {
               boundaryMargin: const EdgeInsets.all(double.infinity),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  return Stack(
+                  return Stack(                                             // allows overlays (coordinate points in this case)
                     children: [
-                      
-                      // The base map image with key to measure its size
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 1.5,  
                             height: MediaQuery.of(context).size.height * 1.5,
                         child: Image.asset(
                           'assets/railway_map.png',
-                          key: _imageKey,
+                          key: _imageKey,                                   // load img with the key set for size
                           fit: BoxFit.contain,
-                          //width: MediaQuery.of(context).size.width,  // Set to screen width
-                         // height: MediaQuery.of(context).size.height,  // Set to screen height
                         ),
                       ),
-                      
-                      // Only show stations after the image size is determined
+
                       if (!isLoading && _imageSize != Size.zero)
-                        ...stations.map((station) {
+                        ...stations.map((station) {                         // call station points to place on map
                           return Positioned(
                             left: station.x,
                             top: station.y,
                             child: GestureDetector(
                               onTap: () {
-                                widget.onStationSelected(station.code, station.name);
-                                Navigator.pop(context);
+                                widget.onStationSelected(station.code, station.name);  // return
+                                Navigator.pop(context);                       // navigate to previous page if station selected
                               },
                               child: Container(
                                 width: 5,
                                 height: 5,
                                 decoration: BoxDecoration(
-                                  color: Colors.red.withOpacity(1),
+                                  color: Colors.green.shade900,
                                   shape: BoxShape.circle,
-                                  //border: Border.all(color: Colors.white, width: 1),
                                 ),
-                       
                               ),
                             ),
                           );
@@ -152,16 +141,13 @@ class _MapPageState extends State<MapPage> {
                 },
               ),
             ),
-          ),
-          
-          // Loading indicator
+          ),       
           if (isLoading)
             const Center(
               child: CircularProgressIndicator(),
             ),
-          
-          // Help text
-          Positioned(
+
+          Positioned(                           // information text
             bottom: 20,
             left: 0,
             right: 0,
@@ -169,7 +155,7 @@ class _MapPageState extends State<MapPage> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
@@ -181,32 +167,31 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
           
-          // Zoom controls
-          Positioned(
+          Positioned(                                 // zoom controls
             right: 16,
             bottom: 80,
             child: Column(
               children: [
-                FloatingActionButton.small(
+                FloatingActionButton.small(           // floating button
                   heroTag: 'zoomIn',
                   onPressed: () {
                     final Matrix4 matrix = _transformationController.value.clone();
-                    matrix.scale(1.25);
-                    _transformationController.value = matrix;
+                    matrix.scale(1.25);              // zoom in scale
+                    _transformationController.value = matrix;     // update controller
                   },
                   backgroundColor: Colors.deepPurple,
-                  child: const Icon(Icons.add),
+                  child: const Icon(Icons.add),     // + icon
                 ),
                 const SizedBox(height: 8),
                 FloatingActionButton.small(
                   heroTag: 'zoomOut',
                   onPressed: () {
                     final Matrix4 matrix = _transformationController.value.clone();
-                    matrix.scale(0.8);
+                    matrix.scale(0.8);              // zoom out scale
                     _transformationController.value = matrix;
                   },
                   backgroundColor: Colors.deepPurple,
-                  child: const Icon(Icons.remove),
+                  child: const Icon(Icons.remove),    // - icon
                 ),
               ],
             ),

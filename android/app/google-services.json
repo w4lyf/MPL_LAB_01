@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "659878135701",
+    "project_id": "ezyticket-90406",
+    "storage_bucket": "ezyticket-90406.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659878135701:android:dc1eee26260c2c8208189c",
+        "android_client_info": {
+          "package_name": "com.example.railway_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7cXwf1SQGtgraMzFqSh7j1s_Nm8MdVwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
